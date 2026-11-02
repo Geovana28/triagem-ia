@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Emergency Clinical Triage & Risk Stratification System based on Manchester Protocol & NEWS2.">
+    <title>AI Emergency Triage System | Clinical Risk Stratification</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand-group">
+                <span class="emergency-badge">🚨 TRIAGE AI</span>
+                <div>
+                    <h1>Emergency Clinical Triage System</h1>
+                    <p class="subtitle">AI & Algorithmic Risk Stratification (Manchester Protocol + NEWS2)</p>
+                </div>
+            </div>
+            <div class="header-status">
+                <span class="pulse-indicator"></span>
+                <span class="system-ready">Inference Engine Active</span>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-grid">
+            <!-- Left: Vital Signs & Patient Entry -->
+            <section class="patient-entry-panel">
+                <!-- Preset Clinical Cases -->
+                <div class="panel-box">
+                    <h3>📋 Rapid Clinical Scenarios</h3>
+                    <div class="preset-cases">
+                        <button class="case-btn" data-case="sepsis">Septic Shock</button>
+                        <button class="case-btn" data-case="ami">Acute MI / Chest Pain</button>
+                        <button class="case-btn" data-case="asthma">Severe Asthma Attack</button>
+                        <button class="case-btn" data-case="mild">Mild Migraine</button>
+                        <button class="case-btn" data-case="healthy">Normal Vitals Check</button>
+                    </div>
+                </div>
+
+                <!-- Vital Signs Input Form -->
+                <div class="panel-box">
+                    <h3>🩺 Patient Vital Signs & Exam</h3>
+                    
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="hr">Heart Rate (HR)</label>
+                            <span class="input-readout" id="hrVal">78 bpm</span>
+                        </div>
+                        <input type="range" id="hr" min="30" max="180" step="1" value="78">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="sbp">Systolic Blood Pressure (SBP)</label>
+                            <span class="input-readout" id="sbpVal">120 mmHg</span>
+                        </div>
+                        <input type="range" id="sbp" min="50" max="230" step="2" value="120">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="spo2">Oxygen Saturation (SpO₂)</label>
+                            <span class="input-readout" id="spo2Val">98%</span>
+                        </div>
+                        <input type="range" id="spo2" min="70" max="100" step="1" value="98">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="rr">Respiratory Rate (RR)</label>
+                            <span class="input-readout" id="rrVal">16 /min</span>
+                        </div>
+                        <input type="range" id="rr" min="6" max="45" step="1" value="16">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="temp">Core Body Temperature</label>
+                            <span class="input-readout" id="tempVal">36.8 °C</span>
+                        </div>
+                        <input type="range" id="temp" min="33.0" max="42.0" step="0.1" value="36.8">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="gcs">Glasgow Coma Scale (GCS)</label>
+                            <span class="input-readout" id="gcsVal">15 / 15</span>
+                        </div>
+                        <input type="range" id="gcs" min="3" max="15" step="1" value="15">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-head">
+                            <label for="pain">Pain Rating (VAS)</label>
+                            <span class="input-readout" id="painVal">2 / 10</span>
+                        </div>
+                        <input type="range" id="pain" min="0" max="10" step="1" value="2">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right: Decision Card, Priority Flag & Risk Analysis -->
+            <section class="triage-output-panel">
+                <!-- Urgency Hero Card -->
+                <div class="triage-card triage-blue" id="triageCard">
+                    <div class="triage-top">
+                        <div class="urgency-title-group">
+                            <span class="urgency-code" id="urgencyCode">CATEGORY V</span>
+                            <h2 class="urgency-category" id="urgencyCategory">Non-Urgent (Blue)</h2>
+                        </div>
+                        <div class="time-limit-badge">
+                            <span class="time-label">Target Assessment</span>
+                            <span class="time-val" id="timeTarget">≤ 240 mins</span>
+                        </div>
+                    </div>
+                    <p class="triage-recommendation" id="triageRec">
+                        Patient exhibits stable physiologic parameters. Eligible for standard outpatient management.
+                    </p>
+                </div>
+
+                <!-- Score Metrics Grid -->
+                <div class="score-grid">
+                    <div class="score-card">
+                        <span class="score-label">NEWS2 Aggregate</span>
+                        <div class="score-number" id="newsScore">0</div>
+                        <span class="score-status" id="newsStatus">Low Clinical Risk</span>
+                    </div>
+
+                    <div class="score-card">
+                        <span class="score-label">Mortality / ICU Probability</span>
+                        <div class="score-number" id="icuRisk">1.2%</div>
+                        <span class="score-status">Based on acute decompensation model</span>
+                    </div>
+
+                    <div class="score-card">
+                        <span class="score-label">Priority Level</span>
+                        <div class="score-number" id="priorityNum">5 <span class="unit-faint">/ 5</span></div>
+                        <span class="score-status">Routine Priority</span>
+                    </div>
+                </div>
+
+                <!-- Asymmetric Clinical Cost Optimization Engine -->
+                <div class="cost-card">
+                    <div class="cost-header">
+                        <div>
+                            <h3>⚖️ Asymmetric Clinical Loss & Threshold Optimization</h3>
+                            <p class="cost-subtitle">Real-world clinical risk: False Negatives (discharging unstable patients) are weighted 20× over False Positives</p>
+                        </div>
+                        <div class="cost-badge" id="expectedLossBadge">Expected Clinical Loss: 0.04</div>
+                    </div>
+                    <div class="cost-controls">
+                        <div class="cost-row">
+                            <label for="fnPenalty">False Negative Severity Weight: <strong id="fnPenaltyVal">20×</strong></label>
+                            <input type="range" id="fnPenalty" min="5" max="50" step="5" value="20">
+                        </div>
+                        <div class="cost-stats">
+                            <div class="cost-stat-item">
+                                <span class="cost-stat-lbl">Safety-Adjusted Priority</span>
+                                <span class="cost-stat-val" id="safetyPriority">Standard (Blue)</span>
+                            </div>
+                            <div class="cost-stat-item">
+                                <span class="cost-stat-lbl">Threshold Shift (Δ Risk)</span>
+                                <span class="cost-stat-val" id="thresholdShift">-18.4% (Cautious)</span>
+                            </div>
+                            <div class="cost-stat-item">
+                                <span class="cost-stat-lbl">Actionable Protocol</span>
+                                <span class="cost-stat-val" id="actionProtocol">Routine Track</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explainable AI: SHAP Feature Attribution Waterfall -->
+                <div class="shap-card">
+                    <div class="chart-header">
+                        <div>
+                            <h3>🔍 Explainable AI: Vital Sign Risk Attribution (SHAP)</h3>
+                            <span class="radar-legend">Local marginal impact of each physiological parameter on triage severity</span>
+                        </div>
+                    </div>
+                    <div class="chart-container-shap">
+                        <canvas id="shapChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Clinical Red Flags Breakdown -->
+                <div class="flags-card">
+                    <h3>⚠️ Physiological Red Flags Detected</h3>
+                    <ul class="flags-list" id="flagsList">
+                        <li class="flag-empty">No critical vital sign deviations detected.</li>
+                    </ul>
+                </div>
+
+                <!-- Radar Chart / Physiological Deviation Map -->
+                <div class="radar-card">
+                    <div class="chart-header">
+                        <h3>Physiological Deviation Radar</h3>
+                        <span class="radar-legend">Deviation from standard homeostasis (100% = Baseline)</span>
+                    </div>
+                    <div class="radar-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
