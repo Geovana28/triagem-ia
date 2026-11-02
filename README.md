@@ -3,9 +3,9 @@
 [![Protocol: Manchester](https://img.shields.io/badge/Protocol-Manchester%20Triage-red.svg)](https://www.triagenet.net/)
 [![Score: NEWS2](https://img.shields.io/badge/Standard-Royal%20College%20NEWS2-blue.svg)](https://www.rcplondon.ac.uk/)
 [![Decision Theory](https://img.shields.io/badge/Optimization-Asymmetric%20Clinical%20Loss-amber.svg)](https://github.com/)
-[![XAI](https://img.shields.io/badge/Explainability-SHAP%20Attribution-cyan.svg)](https://github.com/)
+[![XAI](https://img.shields.io/badge/Explainability-Feature%20Attribution-cyan.svg)](https://github.com/)
 
-> **Projeto Anti-Genérico de IA em Saúde**: Não se limita a classificar prioridades em uma matriz ingênua de acurácia. Implementa **Otimização de Decisão sob Perda Assimétrica** ($C(\text{FN}) \gg C(\text{FP})$) e **Interpretabilidade Local (SHAP Waterfall)** para cada sinal vital do paciente.
+> **Projeto Anti-Genérico de IA em Saúde**: Não se limita a classificar prioridades em uma matriz ingênua de acurácia. Implementa **Otimização de Decisão sob Perda Assimétrica** ($C(\text{FN}) \gg C(\text{FP})$) e **atribuição local por variável** (estilo *waterfall*) para cada sinal vital do paciente.
 
 ---
 
@@ -30,12 +30,12 @@ Quando ponderamos que $C_{\text{FN}} = 20 \times C_{\text{FP}}$, o threshold cai
 
 1. **Classificação Integrada Manchester + NEWS2**:
    - Classificação nas 5 categorias universais (Vermelho, Laranja, Amarelo, Verde, Azul).
-   - Cálculo instantâneo do escore agregado NEWS2 (0 a 20).
+   - Cálculo instantâneo de um escore agregado **inspirado no NEWS2** (limiares fisiológicos de referência, com pesos adaptados — não é a tabela oficial do RCP).
 2. **Motor de Perda Assimétrica (Cost-Sensitive Optimization)**:
    - Slider interativo de penalidade para Falso Negativo ($5\times$ a $50\times$).
    - Reescalonamento automático do protocolo clínico quando o risco supera o threshold seguro.
-3. **Interpretabilidade Local (SHAP Feature Attribution Waterfall)**:
-   - Gráfico de barras horizontais indicando a contribuição marginal (positiva/negativa) de cada parâmetro fisiológico ($\text{SpO}_2$, GCS, PA Sistólica, FC, FR, Temperatura e Escala de Dor).
+3. **Atribuição Local por Variável (Waterfall)**:
+   - Gráfico de barras horizontais indicando a contribuição de cada parâmetro fisiológico ($\text{SpO}_2$, GCS, PA Sistólica, FC, FR, Temperatura e Escala de Dor) em relação a uma linha de base saudável. *Nota: é uma atribuição heurística determinística, não valores SHAP calculados via biblioteca `shap`.*
 4. **Radar de Desvio Homeostático**:
    - Visualização hexagonal de afastamento da linha de base de homeostase clínica.
 5. **Cenários Clínicos Rápidos**:
