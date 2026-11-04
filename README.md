@@ -5,8 +5,16 @@
 [![Decision Theory](https://img.shields.io/badge/Optimization-Asymmetric%20Clinical%20Loss-amber.svg)](https://github.com/)
 [![XAI](https://img.shields.io/badge/Explainability-Feature%20Attribution-cyan.svg)](https://github.com/)
 
-> **Projeto Anti-Genérico de IA em Saúde**: Não se limita a classificar prioridades em uma matriz ingênua de acurácia. Implementa **Otimização de Decisão sob Perda Assimétrica** ($C(\text{FN}) \gg C(\text{FP})$) e **atribuição local por variável** (estilo *waterfall*) para cada sinal vital do paciente.
+> **🇧🇷 Idioma**: Português (Brasil) | **🇺🇸 [English Executive Summary](#-english-executive-summary)**
+>
+> **Projeto de IA em Saúde**: Implementação de triagem clínica com **Otimização de Decisão sob Perda Assimétrica** (C(FN) >> C(FP)), integração Manchester + NEWS2 e **atribuição local explicável por variável** para cada sinal vital do paciente.
 
+---
+
+### 🌐 English Executive Summary
+**Emergency Clinical Triage System** is a healthcare AI decision-support platform engineered by **Geovana Luiza Morais Moreira**. Addressing the clinical reality where false negatives (discharging an unstable patient) carry drastically higher costs than false positives, the system implements Bayesian Decision Theory under Asymmetric Loss Functions to dynamically shift decision thresholds. Integrates Manchester Protocol stratification, NEWS2 physiological scoring, local feature attribution, and interactive clinical scenario stress-testing.
+
+---
 ---
 
 ## 🔬 O Problema Real da Triagem Médica
