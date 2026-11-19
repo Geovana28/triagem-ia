@@ -24,14 +24,32 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    .stApp { background-color: #0b0b0d; color: #f4f4f6; }
-    section[data-testid="stSidebar"] { background-color: #121215; border-right: 1px solid #242429; }
-    div[data-testid="stMetric"] {
-        background-color: #121215;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
+    .stApp { background-color: #0b0b0d !important; color: #f4f4f6 !important; }
+    header[data-testid="stHeader"] { background-color: #0b0b0d !important; border-bottom: 1px solid #18181c; }
+    section[data-testid="stSidebar"] { background-color: #121215 !important; border-right: 1px solid #242429; }
+    section[data-testid="stSidebar"] label, section[data-testid="stSidebar"] p { color: #a1a1aa !important; font-size: 0.82rem; }
+    section[data-testid="stSidebar"] h3 { color: #f4f4f6 !important; font-size: 0.82rem !important; text-transform: uppercase; letter-spacing: 0.05em; }
+    div[data-baseweb="select"] > div { background-color: #0b0b0d !important; border-color: #323238 !important; color: #f4f4f6 !important; border-radius: 4px !important; }
+
+    .kpi-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: #121215;
         border: 1px solid #242429;
         border-radius: 6px;
-        padding: 14px 16px;
+        margin-bottom: 22px;
+        overflow: hidden;
     }
+    @media (max-width: 900px) { .kpi-strip { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-cell { padding: 15px 18px; border-right: 1px solid #242429; }
+    .kpi-cell:last-child { border-right: none; }
+    .kpi-lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #71717a; font-weight: 500; }
+    .kpi-num { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 600; color: #f4f4f6; margin: 5px 0 3px 0; }
+    .kpi-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.71rem; color: #a1a1aa; }
+
     .triage-banner {
         background-color: #121215;
         border: 1px solid #242429;
@@ -40,8 +58,8 @@ st.markdown(
         margin-bottom: 18px;
     }
     .triage-code {
-        font-family: monospace;
-        font-size: 0.78rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.76rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         font-weight: 600;
@@ -56,7 +74,7 @@ st.markdown(
         border: 1px solid #323238;
         border-radius: 4px;
         padding: 8px 12px;
-        font-family: monospace;
+        font-family: 'JetBrains Mono', monospace;
         font-size: 0.82rem;
         margin-bottom: 6px;
         color: #f4f4f6;
@@ -225,12 +243,34 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- KPI STRIP ---
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("NEWS2 Aggregate Score", f"{rule_eval['score']} pts")
-c2.metric("ICU / Decompensation Risk", f"{icu_risk_pct}%")
-c3.metric("Expected FN Loss (Cost)", f"{expected_fn_loss:.2f}", delta=f"Weight {fn_weight}x", delta_color="off")
-c4.metric("RF Predicted Confidence", f"{probs[ml_pred_class]*100:.1f}%")
+# --- UNIFIED KPI STRIP ---
+st.markdown(
+    f"""
+    <div class="kpi-strip">
+        <div class="kpi-cell">
+            <div class="kpi-lbl">NEWS2 Aggregate Score</div>
+            <div class="kpi-num">{rule_eval['score']} pts</div>
+            <div class="kpi-meta">Royal College Physicians</div>
+        </div>
+        <div class="kpi-cell">
+            <div class="kpi-lbl">ICU / Decompensation Risk</div>
+            <div class="kpi-num" style="color:{meta['color']};">{icu_risk_pct}%</div>
+            <div class="kpi-meta">RF Tail Probability</div>
+        </div>
+        <div class="kpi-cell">
+            <div class="kpi-lbl">Expected FN Loss (Cost)</div>
+            <div class="kpi-num">{expected_fn_loss:.2f}</div>
+            <div class="kpi-meta">FN Severity Weight: {fn_weight}x</div>
+        </div>
+        <div class="kpi-cell">
+            <div class="kpi-lbl">RF Predicted Confidence</div>
+            <div class="kpi-num">{probs[ml_pred_class]*100:.1f}%</div>
+            <div class="kpi-meta">100 Trees • StandardScaler</div>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # --- CHARTS ROW ---
 col_left, col_right = st.columns(2)
