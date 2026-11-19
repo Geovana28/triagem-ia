@@ -1,5 +1,6 @@
 # 🚨 AI Emergency Clinical Triage & Risk Stratification System
 
+[![Live App - Streamlit Cloud](https://img.shields.io/badge/Live_App-Streamlit_Cloud-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://triagem-ia.streamlit.app/)
 [![Protocol: Manchester](https://img.shields.io/badge/Protocol-Manchester%20Triage-red.svg)](https://www.triagenet.net/)
 [![Score: NEWS2](https://img.shields.io/badge/Standard-Royal%20College%20NEWS2-blue.svg)](https://www.rcplondon.ac.uk/)
 [![Decision Theory](https://img.shields.io/badge/Optimization-Asymmetric%20Clinical%20Loss-amber.svg)](https://github.com/)
